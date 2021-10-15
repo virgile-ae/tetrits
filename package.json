@@ -1,0 +1,11 @@
+{
+  "name": "tetrits",
+  "version": "1.0.0",
+  "description": "tetris made with typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "Virgile Alexandre-Epivent",
+  "license": "ISC"
+}
