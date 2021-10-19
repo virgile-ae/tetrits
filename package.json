@@ -4,8 +4,16 @@
   "description": "tetris made with typescript",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "start": "tsc"
   },
   "author": "Virgile Alexandre-Epivent",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virgile-ae/tetrits.git"
+  },
+  "bugs": {
+    "url": "https://github.com/virgile-ae/tetrits/issues"
+  },
+  "homepage": "https://github.com/virgile-ae/tetrits#readme"
 }

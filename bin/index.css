@@ -1,0 +1,10 @@
+#holder {
+	font-size: large;
+	font-family: Consolas, monospace;
+	width: 300px;
+	margin: auto;
+}
+
+canvas {
+	background-color: black;
+}

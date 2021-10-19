@@ -2,23 +2,18 @@
 
 <html lang="en">
 	<head>
-		<script src="index.js" defer></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="index.css">
+		<script type="module" src="./index.js" defer></script>
+		<title>tetrits</title>
 	</head>
-
 	<body>
 		<div id="holder">
-			<h1>tetrits</h1>
-			<canvas id="canvas" height="600" width="300" style="background-color: black;"></canvas>
-			<h2 id="score"></h2>
+			<h3 id="level"></h3>
+			<h3 id="clearedRows"></h3>
+			<h3 id="score"></h3>
+			<canvas id="canvas" height="600" width="300"></canvas>
 		</div>
 	</body>
-
-	<style>
-		#holder {
-			font-size: large;
-			font-family: Consolas, monospace;
-			width: 25%;
-			margin: auto;
-		}
-	</style>
 </html>
