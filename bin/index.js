@@ -8,6 +8,3 @@ export let loop = setInterval(gameLoop, interval);
 export const setLoop = (newLoop) => {
     loop = newLoop;
 };
-const audio = document.getElementById("audio");
-audio.load();
-audio.play();

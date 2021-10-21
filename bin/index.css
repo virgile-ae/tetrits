@@ -4,8 +4,6 @@
 }
 
 #info {
-	font-size: large;
-	font-family: Consolas, monospace;
 	float: right;
 	margin-top: 1ch;
 }
@@ -21,7 +19,23 @@
 #next {
 	background-color: black;
 	float: right;
-	margin: 2ch 0ch 0ch 0ch;
+	margin-top: 2ch;
+	margin-bottom: 2ch;
 	border: 3px white;
 	border-radius: 10px;
+}
+
+audio {
+	margin-top: 2ch;
+	width: 250px;
+}
+
+p {
+	font-size: large;
+	font-family: Consolas, monospace;
+}
+
+label {
+	font-size: large;
+	font-family: Consolas, monospace;
 }
