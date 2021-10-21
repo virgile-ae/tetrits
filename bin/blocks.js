@@ -1,15 +1,6 @@
+import { drawNext } from "./canvasManipulation.js";
 import { randomTetrimino } from "./game.js";
-import { EDirection, I, J, L, T, S, Z, O } from "./tetrimino.js";
-export var ETetrimino;
-(function (ETetrimino) {
-    ETetrimino["I"] = "lightskyblue";
-    ETetrimino["J"] = "darkblue";
-    ETetrimino["L"] = "orange";
-    ETetrimino["T"] = "magenta";
-    ETetrimino["S"] = "green";
-    ETetrimino["Z"] = "red";
-    ETetrimino["O"] = "yellow";
-})(ETetrimino || (ETetrimino = {}));
+import { EDirection, ETetrimino, I, J, L, T, S, Z, O } from "./tetrimino.js";
 export const newActiveBlock = (x, y) => {
     return { X: x, Y: y };
 };
@@ -17,31 +8,33 @@ export let Tetrimino;
 export const setTetrimino = (tetrimino) => {
     Tetrimino = tetrimino;
 };
-export const newTetrimino = () => {
-    const x = 5;
-    const y = -1;
-    const direction = EDirection.Up;
-    const tetrimino = randomTetrimino();
-    Tetrimino = {
-        X: x,
-        Y: y,
-        Direction: direction,
-        Type: tetrimino,
-        Blocks: findActiveBlocks(x, y, direction, tetrimino)
-    };
-};
+export let nextTetrimino = randomTetrimino();
 export let inactiveBlocks = [];
 export const setInactiveBlocks = (blocks) => {
     inactiveBlocks = blocks;
 };
+export const newTetrimino = () => {
+    const x = 5;
+    const y = -2;
+    const direction = EDirection.Up;
+    Tetrimino = {
+        X: x,
+        Y: y,
+        Direction: direction,
+        Type: nextTetrimino,
+        Blocks: findActiveBlocks(x, y, direction, nextTetrimino)
+    };
+    nextTetrimino = randomTetrimino();
+    drawNext();
+};
 export const disactivateBlocks = () => {
-    Tetrimino.Blocks.forEach((i) => {
+    for (let i of Tetrimino.Blocks) {
         inactiveBlocks.push({
             X: i.X,
             Y: i.Y,
             Color: Tetrimino.Type
         });
-    });
+    }
 };
 export const findActiveBlocks = (X, Y, Direction, type) => {
     switch (type) {

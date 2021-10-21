@@ -1,12 +1,22 @@
-/**
- * All of the orientations are based on the 'Original Rotation System' according to this link: https://tetris.wiki/Original_Rotation_System
- */
-
+// Contains functions which calculate the blocks of the tetrimino based on its coordinates, its type and its orientation.
+// All of the orientations are based on the 'Original Rotation System' according to this page: https://tetris.wiki/Original_Rotation_System
 import { ActiveBlock, newActiveBlock } from "./blocks.js";
-import { drawBlock } from "./canvasManipulation.js";
+
+/**
+ * All different tetriminos
+ */
+export enum ETetrimino {
+	I = "cyan",
+	J = "darkblue",
+	L = "orange",
+	T = "magenta",
+	S = "green",
+	Z = "red",
+	O = "yellow"
+}
 
 /** 
- * EDirection informs drawJ, drawL and drawT of which direction the tetrimino is oriented
+ * The direction in which the tetrimino is oriented
  */ 
 export enum EDirection {
 	// Up is the default direction in which the tetrimino spawns
@@ -17,15 +27,6 @@ export enum EDirection {
 	Left = 270,
 	// Right is a 90 deg rotation clockwise of Up
 	Right = 90,
-};
-
-/**
- 
- * @param blocks The blocks that are to be drawn to the screen
- * @param color The color of the blocks that are to be drawn
- */
-export const draw = (blocks: ActiveBlock[], color: string): void => {
-	blocks.forEach(i => drawBlock(i.X, i.Y, color));
 };
 
 /**

@@ -1,18 +1,7 @@
+// Manipulating blocks
+import { drawNext } from "./canvasManipulation.js";
 import { randomTetrimino } from "./game.js";
-import { EDirection, I, J, L, T, S, Z, O } from "./tetrimino.js";
-
-/**
- * All different tetriminos
- */
-export enum ETetrimino {
-	I = "lightskyblue",
-	J = "darkblue",
-	L = "orange",
-	T = "magenta",
-	S = "green",
-	Z = "red",
-	O = "yellow"
-}
+import { EDirection, ETetrimino, I, J, L, T, S, Z, O } from "./tetrimino.js";
 
 /**
  * The type that represents the active tetrimino
@@ -53,21 +42,9 @@ export const setTetrimino = (tetrimino: ActiveTetrimino) => {
 }
 
 /**
- * Generates a new Tetrimino
+ * The next tetrimino to be dropped
  */
-export const newTetrimino = (): void => {
-	const x = 5;
-	const y = -1;
-	const direction = EDirection.Up;
-	const tetrimino = randomTetrimino()
-	Tetrimino = {
-		X: x,
-		Y: y,
-		Direction: direction,
-		Type: tetrimino,
-		Blocks: findActiveBlocks(x, y, direction, tetrimino)
-	};
-}
+export let nextTetrimino = randomTetrimino();
 
 /**
  * The type that represents the now unactive blocks that have landed
@@ -91,17 +68,35 @@ export const setInactiveBlocks = (blocks: InactiveBlock[]): void => {
 }
 
 /**
- * This is for when the piece lands
- * New activePiece and activeBlocks will be needed to be generated and so on.
+ * Generates a new Tetrimino
  */
-export const disactivateBlocks = () => {
-	Tetrimino.Blocks.forEach((i: ActiveBlock) => {
+export const newTetrimino = (): void => {
+	const x = 5;
+	const y = -2;
+	const direction = EDirection.Up;
+	Tetrimino = {
+		X: x,
+		Y: y,
+		Direction: direction,
+		Type: nextTetrimino,
+		Blocks: findActiveBlocks(x, y, direction, nextTetrimino)
+	}
+	nextTetrimino = randomTetrimino();
+	drawNext();
+}
+
+/**
+ * This is for when the piece lands
+ * New activePiece and activeBlocks will be needed to be generated and so on
+ */
+export const disactivateBlocks = (): void => {
+	for (let i of Tetrimino.Blocks) {
 		inactiveBlocks.push({
 			X: i.X,
 			Y: i.Y,
 			Color: Tetrimino.Type
 		});
-	});
+	}
 }
 
 /**

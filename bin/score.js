@@ -1,9 +1,27 @@
+import { gameLoop } from "./game.js";
+import { loop, setLoop } from "./index.js";
+import { clearedRows, setClearedRows } from "./rows.js";
 let score = 0;
-const updateScore = () => {
-    let htmlScore = document.getElementById("score");
-    htmlScore.innerHTML = `Score: ${score}`;
-};
+export let level = 0;
+const displayedScore = document.getElementById("score");
+const displayedLevel = document.getElementById("level");
 export const addToScore = (newPoints) => {
     score += newPoints;
-    updateScore();
+    displayedScore.innerHTML = `score ${score}`;
+};
+export const checkLevel = () => {
+    const requiredRows = 10;
+    if (level === 19)
+        return;
+    if (clearedRows >= requiredRows) {
+        setClearedRows(clearedRows - requiredRows);
+        displayedLevel.innerHTML = `level ${++level}`;
+        updateSpeed();
+    }
+};
+export let interval = 800;
+export const updateSpeed = () => {
+    interval *= 0.8;
+    clearInterval(loop);
+    setLoop(setInterval(gameLoop, interval));
 };

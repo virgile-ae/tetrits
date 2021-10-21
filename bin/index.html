@@ -10,10 +10,15 @@
 	</head>
 	<body>
 		<div id="holder">
-			<h3 id="level"></h3>
-			<h3 id="clearedRows"></h3>
-			<h3 id="score"></h3>
-			<canvas id="canvas" height="600" width="300"></canvas>
+			<canvas id="matrix" height="600" width="300"></canvas>
+			<div id="info">
+				<p id="level">level 0</p>
+				<p id="clearedRows">cleared rows 0</p>
+				<p id="score">score 0</p>
+				<label for="next">next piece</label> <br>
+				<canvas name="next" id="next" height="200" width="200"></canvas>
+			</div>
 		</div>
+		<audio src="tetrits.mp3" id="music" autoplay loop></audio>
 	</body>
 </html>

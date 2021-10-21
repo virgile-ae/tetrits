@@ -1,10 +1,11 @@
 import { newTetrimino } from "./blocks.js";
 import { handleKeypress } from "./controls.js";
 import { gameLoop } from "./game.js";
-import { displayTotalClearedRows } from "./rows.js";
-import { addToScore } from "./score.js";
-displayTotalClearedRows();
-addToScore(0);
+import { interval } from "./score.js";
 newTetrimino();
-let interval = setInterval(gameLoop, 800);
 handleKeypress();
+export let loop = setInterval(gameLoop, interval);
+export const setLoop = (newLoop) => {
+    loop = newLoop;
+};
+document.onload = () => document.getElementById("music").play();

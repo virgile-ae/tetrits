@@ -1,49 +1,56 @@
-import { level } from "./level.js";
+import { checkLevel, level } from "./score.js";
 import { inactiveBlocks, setInactiveBlocks } from "./blocks.js";
 import { addToScore } from "./score.js";
+import { virtualHeight } from "./virtualGrid.js";
 export let clearedRows = 0;
 export const setClearedRows = (num) => {
     clearedRows = num;
 };
 export let totalClearedRows = 0;
-export const displayTotalClearedRows = () => {
-    let displayedClearedRows = document.getElementById("clearedRows");
-    displayedClearedRows.innerHTML = `Cleared Rows: ${totalClearedRows}`;
-};
+const displayedClearedRows = document.getElementById("clearedRows");
 export const handleFullRows = () => {
     let remove = [];
-    for (let y = 0; y < 20; y++) {
-        let row = inactiveBlocks.filter((i) => i.Y === y);
-        if (row.length === 10) {
-            clearedRows++;
-            totalClearedRows++;
-            remove.push(y);
+    for (let y = 0; y < virtualHeight; y++) {
+        let row = [];
+        for (let i of inactiveBlocks) {
+            if (i.Y === y)
+                row.push(i);
         }
+        if (row.length === 10)
+            remove.push(y);
     }
     if (remove.length === 0)
         return;
     clearedRows += remove.length;
     totalClearedRows += remove.length;
-    setInactiveBlocks(inactiveBlocks.filter((i) => {
-        remove.forEach((j) => {
+    let filtered = [];
+    outer: for (let i of inactiveBlocks) {
+        for (let j of remove) {
             if (i.Y === j)
-                return true;
-        });
-        return false;
-    }));
-    displayTotalClearedRows();
+                continue outer;
+            if (i.Y < j)
+                i.Y++;
+        }
+        filtered.push(i);
+    }
+    setInactiveBlocks(filtered);
+    displayedClearedRows.innerHTML = `cleared rows ${totalClearedRows}`;
+    let multi;
     switch (remove.length) {
         case 1:
-            addToScore(40 * level + 1);
+            multi = 40;
             break;
         case 2:
-            addToScore(100 * level + 1);
+            multi = 100;
             break;
         case 3:
-            addToScore(300 * level + 1);
+            multi = 300;
             break;
-        case 4:
-            addToScore(1200 * level + 1);
+        default:
+            multi = 1200;
             break;
     }
+    multi *= level;
+    addToScore(multi);
+    checkLevel();
 };

@@ -1,10 +1,27 @@
 #holder {
-	font-size: large;
-	font-family: Consolas, monospace;
-	width: 300px;
+	width: fit-content;
 	margin: auto;
 }
 
-canvas {
+#info {
+	font-size: large;
+	font-family: Consolas, monospace;
+	float: right;
+	margin-top: 1ch;
+}
+
+#matrix {
 	background-color: black;
+	float: left;
+	margin: 2ch;
+	border: 3px white;
+	border-radius: 10px;
+}
+
+#next {
+	background-color: black;
+	float: right;
+	margin: 2ch 0ch 0ch 0ch;
+	border: 3px white;
+	border-radius: 10px;
 }

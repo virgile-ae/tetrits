@@ -1,15 +1,20 @@
+import { gameLoop } from "./game.js";
+import { loop, setLoop } from "./index.js";
+import { clearedRows, setClearedRows } from "./rows.js";
+
 /**
  * The user's current score
  */ 
 let score = 0;
 
 /**
- * Updates the score that is displayed on the screen
+ * The user's current level
  */
-const updateScore = (): void => {
-	let htmlScore = document.getElementById("score") as HTMLHeadingElement;
-	htmlScore.innerHTML = `Score: ${score}`;
-};
+export let level = 0;
+
+// The HTML level and score elements
+const displayedScore = document.getElementById("score") as HTMLParagraphElement;
+const displayedLevel = document.getElementById("level") as HTMLParagraphElement;
 
 /**
  * Increases the user's score on screen
@@ -17,5 +22,30 @@ const updateScore = (): void => {
  */
 export const addToScore = (newPoints: number): void => {
 	score += newPoints;
-	updateScore();
-};
+	displayedScore.innerHTML = `score ${score}`;
+}
+
+
+/**
+ * Checks if the required number of completed rows has been met, then resets completedRows and increments level
+ */
+export const checkLevel = (): void => {
+	const requiredRows = 10;
+	if (level === 19) return;
+	if (clearedRows >= requiredRows) {
+		setClearedRows(clearedRows - requiredRows);
+		displayedLevel.innerHTML = `level ${++level}`;
+		updateSpeed();
+	}
+}
+
+export let interval = 800;
+
+/**
+ * Increases the falling speed of the tetrimino
+ */
+export const updateSpeed = (): void => {
+	interval *= 0.8;
+	clearInterval(loop);
+	setLoop(setInterval(gameLoop, interval));
+}

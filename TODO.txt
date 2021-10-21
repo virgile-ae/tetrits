@@ -1,0 +1,12 @@
+Things that i need to implement:
+FIX ISSUE WHERE THERE IS A GAME OVER WHEN SHIFTING THE PIECE AFTER IT HAS LANDED (PART OF SOFT LOCKING)
+ - sound
+ - soft locking
+ - ghost piece
+ - score saving
+ - speed increase
+ - dark mode
+ - customize block patterns
+ - soft drop points
+ - replace forEach with for(of)
+ - change randomizer to be like this: https://tetris.wiki/Random_Generator

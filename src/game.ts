@@ -1,14 +1,18 @@
-import { Tetrimino, inactiveBlocks, ETetrimino, findActiveBlocks, InactiveBlock, disactivateBlocks, ActiveBlock, newTetrimino, ActiveTetrimino } from "./blocks.js";
-import { rotateTetrimino, shiftTetrimino } from "./movement.js";
-import { EDirection } from "./tetrimino.js";
+// Game logic and functions
+import { Tetrimino, findActiveBlocks } from "./blocks.js";
+import { clearScreen, write } from "./canvasManipulation.js";
+import { handleMovement } from "./controls.js";
+import { loop } from "./index.js";
+import { shiftTetrimino } from "./movement.js";
+import { EDirection, ETetrimino } from "./tetrimino.js";
 
 /**
- * This is a collection of functions that are to be called repeatedly for the game to run.
+ * This is a collection of functions that are to be called repeatedly for the game to run
  */
 export const gameLoop = (): void => {
 	findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
 	shiftTetrimino(EDirection.Down);
-};
+}
 
 /**
  * Randomly generates a new ETetrimino
@@ -20,23 +24,14 @@ export const randomTetrimino = (): ETetrimino => {
 }
 
 /**
- * Checks if there is an inactive block or the floor underneath the tetrimino
- * @returns A boolean that is true if there is something underneath the tetrimino
+ * Handles a game loss
  */
-export const hasUnderneath = (blocks: ActiveBlock[]): boolean => {
-	let temp = false;
-	blocks.forEach((i: ActiveBlock) => {
-		if (i.Y >= 19) temp = true;
-		inactiveBlocks.forEach((j: InactiveBlock) => {
-			if (i.X === j.X && i.Y+1 === j.Y) temp = true;
-		});
+export const handleLoss = (): void => {
+	clearInterval(loop);
+	document.removeEventListener("keydown", handleMovement);
+	(document.getElementById("music") as HTMLAudioElement).pause();
+	requestAnimationFrame(() => {
+		clearScreen();
+		write(2.5, 9.5, "GAME OVER");
 	});
-	return temp;
-}
-
-export const hasLost = (): boolean => {
-	inactiveBlocks.forEach((i: InactiveBlock) => {
-		if (i.Y <= 0) return true;
-	});
-	return false;
 }

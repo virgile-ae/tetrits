@@ -1,5 +1,14 @@
 import { newActiveBlock } from "./blocks.js";
-import { drawBlock } from "./canvasManipulation.js";
+export var ETetrimino;
+(function (ETetrimino) {
+    ETetrimino["I"] = "cyan";
+    ETetrimino["J"] = "darkblue";
+    ETetrimino["L"] = "orange";
+    ETetrimino["T"] = "magenta";
+    ETetrimino["S"] = "green";
+    ETetrimino["Z"] = "red";
+    ETetrimino["O"] = "yellow";
+})(ETetrimino || (ETetrimino = {}));
 export var EDirection;
 (function (EDirection) {
     EDirection[EDirection["Up"] = 0] = "Up";
@@ -8,9 +17,6 @@ export var EDirection;
     EDirection[EDirection["Right"] = 90] = "Right";
 })(EDirection || (EDirection = {}));
 ;
-export const draw = (blocks, color) => {
-    blocks.forEach(i => drawBlock(i.X, i.Y, color));
-};
 export const I = (x, y, direction) => {
     let tempArr = [newActiveBlock(x, y)];
     switch (direction) {
