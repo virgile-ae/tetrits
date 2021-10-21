@@ -8,4 +8,7 @@ export let loop = setInterval(gameLoop, interval);
 export const setLoop = (newLoop) => {
     loop = newLoop;
 };
-document.onload = () => document.getElementById("music").play();
+const audio = document.getElementById("audio");
+audio.src = URL.createObjectURL("song.mp3");
+audio.load();
+audio.play();

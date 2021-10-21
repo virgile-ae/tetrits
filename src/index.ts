@@ -20,3 +20,7 @@ export let loop = setInterval(gameLoop, interval);
 export const setLoop = (newLoop: number): void => {
 	loop = newLoop;
 }
+const audio = document.getElementById("audio") as HTMLAudioElement;
+audio.src = URL.createObjectURL("song.mp3");
+audio.load();
+audio.play();
