@@ -1,11 +1,22 @@
 import { newTetrimino } from "./blocks.js";
+import { drawBlock } from "./canvasManipulation.js";
 import { handleKeypress } from "./controls.js";
 import { gameLoop } from "./game.js";
-import { displayTotalClearedRows } from "./rows.js";
-import { addToScore } from "./score.js";
+import { interval } from "./score.js";
 
-displayTotalClearedRows();
-addToScore(0);
+// The initial tetrimino
 newTetrimino();
-let interval = setInterval(gameLoop, 800);
+// Listens for keypresses
 handleKeypress();
+
+/**
+ * The instance of the game loop
+ */
+export let loop = setInterval(gameLoop, interval);
+
+/**
+ * Allows other modules to set loop
+ */
+export const setLoop = (newLoop: number): void => {
+	loop = newLoop;
+}
