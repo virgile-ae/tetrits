@@ -4,10 +4,10 @@ import { EDirection, ETetrimino } from "./tetrimino.js";
 import { virtualToActual, blockLen, virtualHeight, virtualWidth } from "./virtualGrid.js";
 
 // Getting canvas element from DOM
-const mainCanvas = document.getElementById("matrix") as HTMLCanvasElement;
+export const mainCanvas = document.getElementById("matrix") as HTMLCanvasElement;
 const mainCtx = mainCanvas.getContext("2d") as CanvasRenderingContext2D;
 
-const nextCanvas = document.getElementById("next") as HTMLCanvasElement;
+export const nextCanvas = document.getElementById("next") as HTMLCanvasElement;
 const nextCtx = nextCanvas.getContext("2d") as CanvasRenderingContext2D;
 
 

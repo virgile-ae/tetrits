@@ -1,3 +1,27 @@
+.light {
+	color: white;
+	background-color: black;
+}
+
+.light button {
+	border-color: white;
+}
+
+.dark {
+	color: black;
+	background-color: white;
+	border-color: white;
+}
+
+.border {
+	border: 3px solid;
+	border-radius: 10px;
+}
+
+canvas.border {
+	border-color: white;
+}
+
 #holder {
 	width: fit-content;
 	margin: auto;
@@ -9,24 +33,18 @@
 }
 
 #matrix {
-	background-color: black;
 	float: left;
 	margin: 2ch;
-	border: 3px white;
-	border-radius: 10px;
 }
 
 #next {
-	background-color: black;
 	float: right;
 	margin-top: 2ch;
 	margin-bottom: 2ch;
-	border: 3px white;
-	border-radius: 10px;
 }
 
 audio {
-	margin-top: 2ch;
+	margin: 2ch 0 2ch 0;
 	width: 250px;
 }
 
@@ -38,4 +56,12 @@ p {
 label {
 	font-size: large;
 	font-family: Consolas, monospace;
+}
+
+button {
+	font-size: large;
+	background-color: white;
+	border-color: black;
+	margin-top: 2ch;
+	padding: 1ch;
 }

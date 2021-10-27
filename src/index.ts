@@ -1,8 +1,8 @@
 import { newTetrimino } from "./blocks.js";
-import { drawBlock } from "./canvasManipulation.js";
 import { handleKeypress } from "./controls.js";
 import { gameLoop } from "./game.js";
 import { interval } from "./score.js";
+import "./ui.js";
 
 // The initial tetrimino
 newTetrimino();
@@ -20,3 +20,4 @@ export let loop = setInterval(gameLoop, interval);
 export const setLoop = (newLoop: number): void => {
 	loop = newLoop;
 }
+

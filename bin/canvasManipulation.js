@@ -1,9 +1,9 @@
 import { inactiveBlocks, Tetrimino, nextTetrimino, findActiveBlocks } from "./blocks.js";
 import { EDirection } from "./tetrimino.js";
 import { virtualToActual, blockLen, virtualHeight, virtualWidth } from "./virtualGrid.js";
-const mainCanvas = document.getElementById("matrix");
+export const mainCanvas = document.getElementById("matrix");
 const mainCtx = mainCanvas.getContext("2d");
-const nextCanvas = document.getElementById("next");
+export const nextCanvas = document.getElementById("next");
 const nextCtx = nextCanvas.getContext("2d");
 export const drawBlock = (virtualX, virtualY, color, main) => {
     const actualX = virtualToActual(virtualX);

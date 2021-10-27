@@ -11,18 +11,18 @@
 	</head>
 	<body>
 		<div id="holder">
-			<canvas id="matrix" height="600" width="300"></canvas>
+			<canvas id="matrix" class="border" height="600" width="300"></canvas>
 			<div id="info">
 				<p id="level">level 0</p>
 				<p id="clearedRows">cleared rows 0</p>
 				<p id="score">score 0</p>
 				<label for="next">next piece</label> <br>
-				<canvas name="next" id="next" height="200" width="200"></canvas>
+				<canvas name="next" id="next" class="border" height="200" width="200"></canvas>
 			</div>
-		</div>
-		<br>
-		<label for="music">music</label>
-		<br>
-		<audio src="tetrits.mp3" name="music" id="music" autoplay loop controls></audio>
+		</div> <br>
+		<label for="music">music</label> <br>
+		<audio name="music" id="music" src="tetrits.mp3" loop controls></audio> <br>
+		<label for="toggle">color mode</label> <br>
+		<button name="toggle" id="toggle" class="border" onclick="toggleTone">☀️</button>
 	</body>
 </html>
