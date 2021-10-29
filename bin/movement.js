@@ -4,11 +4,25 @@ import { checkSame, hasLost, hasUnderneath, isInMatrix } from "./checks.js";
 import { handleLoss } from "./game.js";
 import { handleFullRows } from "./rows.js";
 import { EDirection } from "./tetrimino.js";
+const handleUnderneath = () => {
+    canMoveDown = false;
+    setTimeout(() => {
+        disactivateBlocks();
+        if (hasLost())
+            return handleLoss();
+        handleFullRows();
+        newTetrimino();
+        canMoveDown = true;
+    }, 500);
+};
+let canMoveDown = true;
 export const shiftTetrimino = (direction) => {
     drawAllBlocks();
     const original = Object.assign({}, Tetrimino);
     switch (direction) {
         case EDirection.Down:
+            if (!canMoveDown)
+                return;
             Tetrimino.Y++;
             break;
         case EDirection.Left:
@@ -21,15 +35,12 @@ export const shiftTetrimino = (direction) => {
     Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
     if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
         return setTetrimino(original);
-    if (!hasUnderneath(Tetrimino.Blocks))
-        return;
-    disactivateBlocks();
-    if (hasLost())
-        return handleLoss();
-    handleFullRows();
-    newTetrimino();
+    if (canMoveDown && hasUnderneath(Tetrimino.Blocks))
+        handleUnderneath();
 };
 export const rotateTetrimino = () => {
+    if (!canMoveDown)
+        return;
     const original = Object.assign({}, Tetrimino);
     if (Tetrimino.Direction !== 270) {
         Tetrimino.Direction += 90;
