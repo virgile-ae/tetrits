@@ -9,7 +9,7 @@ export const setClearedRows = (num) => {
 export let totalClearedRows = 0;
 const displayedClearedRows = document.getElementById("clearedRows");
 export const handleFullRows = () => {
-    let remove = [];
+    let toBeRemoved = [];
     for (let y = 0; y < virtualHeight; y++) {
         let row = [];
         for (let i of inactiveBlocks) {
@@ -17,15 +17,15 @@ export const handleFullRows = () => {
                 row.push(i);
         }
         if (row.length === 10)
-            remove.push(y);
+            toBeRemoved.push(y);
     }
-    if (remove.length === 0)
+    if (toBeRemoved.length === 0)
         return;
-    clearedRows += remove.length;
-    totalClearedRows += remove.length;
+    clearedRows += toBeRemoved.length;
+    totalClearedRows += toBeRemoved.length;
     let filtered = [];
     outer: for (let i of inactiveBlocks) {
-        for (let j of remove) {
+        for (let j of toBeRemoved) {
             if (i.Y === j)
                 continue outer;
             if (i.Y < j)
@@ -35,22 +35,21 @@ export const handleFullRows = () => {
     }
     setInactiveBlocks(filtered);
     displayedClearedRows.innerHTML = `cleared rows ${totalClearedRows}`;
-    let multi;
-    switch (remove.length) {
+    let multi = level;
+    switch (toBeRemoved.length) {
         case 1:
-            multi = 40;
+            multi *= 40;
             break;
         case 2:
-            multi = 100;
+            multi *= 100;
             break;
         case 3:
-            multi = 300;
+            multi *= 300;
             break;
         default:
-            multi = 1200;
+            multi *= 1200;
             break;
     }
-    multi *= level;
     addToScore(multi);
     checkLevel();
 };

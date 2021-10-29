@@ -14,13 +14,18 @@ export const gameLoop = (): void => {
 	shiftTetrimino(EDirection.Down);
 }
 
+// The bag from which the tetriminos are randomly generated
+let bag = [ETetrimino.I, ETetrimino.J, ETetrimino.L, ETetrimino.O, ETetrimino.S, ETetrimino.T, ETetrimino.Z];
+
 /**
- * Randomly generates a new ETetrimino
+ * Randomly generates a new ETetrimino via this method: https://tetris.wiki/Random_Generator
  * @returns A randomly generated ETetrimino
  */
 export const randomTetrimino = (): ETetrimino => {
-	const tetriminos = [ETetrimino.I, ETetrimino.J, ETetrimino.L, ETetrimino.O, ETetrimino.S, ETetrimino.T, ETetrimino.Z];
-	return tetriminos[Math.floor(Math.random() * 7)];
+	const index = Math.floor(Math.random() * bag.length);
+	let [newTetrimino] = bag.splice(index, 1);
+	if (bag.length === 0) bag = [ETetrimino.I, ETetrimino.J, ETetrimino.L, ETetrimino.O, ETetrimino.S, ETetrimino.T, ETetrimino.Z];
+	return newTetrimino;
 }
 
 /**

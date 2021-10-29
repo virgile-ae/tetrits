@@ -27,24 +27,22 @@ const displayedClearedRows = document.getElementById("clearedRows") as HTMLParag
  * Checks every row in grid to see if has been cleared and awards the necessary points according to the original nintendo scoring system: https://tetris.fandom.com/wiki/Scoring
  */
 export const handleFullRows = (): void => {
-	let remove: number[] = [];
-
+	let toBeRemoved: number[] = [];
 	for (let y = 0; y < virtualHeight; y++) {
 		let row: InactiveBlock[] = [];
 		for (let i of inactiveBlocks) {
 			if (i.Y === y) row.push(i);
 		}
-		if (row.length === 10) remove.push(y);
+		if (row.length === 10) toBeRemoved.push(y);
 	}
+	if (toBeRemoved.length === 0) return;
 
-	if (remove.length === 0) return;
-
-	clearedRows += remove.length;
-	totalClearedRows += remove.length;
+	clearedRows += toBeRemoved.length;
+	totalClearedRows += toBeRemoved.length;
 
 	let filtered: InactiveBlock[] = [];
 	outer: for (let i of inactiveBlocks) {
-		for (let j of remove) {
+		for (let j of toBeRemoved) {
 			if (i.Y === j) continue outer;
 			if (i.Y < j) i.Y++;
 		}
@@ -54,22 +52,21 @@ export const handleFullRows = (): void => {
 
 	displayedClearedRows.innerHTML = `cleared rows ${totalClearedRows}`;
 
-	let multi: number;
-	switch (remove.length) {
+	let multi = level;
+	switch (toBeRemoved.length) {
 		case 1:
-			multi = 40;
+			multi *= 40;
 			break;
 		case 2:
-			multi = 100;
+			multi *= 100;
 			break;
 		case 3:
-			multi = 300;
+			multi *= 300;
 			break;
 		default:
-			multi = 1200;
+			multi *= 1200;
 			break;
 	}
-	multi *= level;
 	addToScore(multi);
 	checkLevel();
 }

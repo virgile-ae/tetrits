@@ -9,18 +9,16 @@ const body = document.getElementsByTagName("body")[0] as HTMLBodyElement;
 const audio = document.getElementsByTagName("audio")[0] as HTMLAudioElement;
 let dark = false;
 
-const toggleTone = (): void => {
+toggle.onclick = (): void => {
 	toggle.innerHTML = dark ? "☀️" : "🌙";
 	let tone = dark ? "dark" : "light";
 	dark = !dark;
 	toggle.className = `border ${tone}`;
 	mainCanvas.className = `border ${tone} `;
-	info.className = `border ${tone} `;
 	html.className = tone;
 	body.className = tone;
+	info.className = tone;
 	audio.className = tone;
 	for (let i of p) i.className = tone;
 	for (let i of labels) i.className = tone;
 }
-
-toggle.onclick = toggleTone;

@@ -53,7 +53,7 @@ export type InactiveBlock = {
 	X: number;
 	Y: number;
 	Color: string;
-};
+}
 
 /**
  * It is list of all inactive blocks
@@ -86,8 +86,7 @@ export const newTetrimino = (): void => {
 }
 
 /**
- * This is for when the piece lands
- * New activePiece and activeBlocks will be needed to be generated and so on
+ * Pushes all of the active blocks to the inactive blocks 
  */
 export const disactivateBlocks = (): void => {
 	for (let i of Tetrimino.Blocks) {

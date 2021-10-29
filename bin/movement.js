@@ -5,6 +5,7 @@ import { handleLoss } from "./game.js";
 import { handleFullRows } from "./rows.js";
 import { EDirection } from "./tetrimino.js";
 export const shiftTetrimino = (direction) => {
+    drawAllBlocks();
     const original = Object.assign({}, Tetrimino);
     switch (direction) {
         case EDirection.Down:
@@ -18,20 +19,15 @@ export const shiftTetrimino = (direction) => {
             break;
     }
     Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-    drawAllBlocks();
     if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
         return setTetrimino(original);
     if (!hasUnderneath(Tetrimino.Blocks))
         return;
-    findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
     disactivateBlocks();
-    if (hasLost()) {
-        handleLoss();
-    }
-    else {
-        handleFullRows();
-        newTetrimino();
-    }
+    if (hasLost())
+        return handleLoss();
+    handleFullRows();
+    newTetrimino();
 };
 export const rotateTetrimino = () => {
     const original = Object.assign({}, Tetrimino);

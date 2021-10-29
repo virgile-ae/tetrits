@@ -6,10 +6,12 @@ import { handleFullRows } from "./rows.js";
 import { EDirection, T } from "./tetrimino.js";
 
 /**
- * Shifts the piece in a direction
+ * Shifts the piece in a direction and performs necessary checks
+ * Also disactivates the tetrimino if it has landed
  * @param direction The direction in which the piece is to be shifted.
  */
 export const shiftTetrimino = (direction: EDirection): void => {
+	drawAllBlocks();
 	const original = Object.assign({}, Tetrimino);
 	switch (direction) {
 		case EDirection.Down:
@@ -23,17 +25,16 @@ export const shiftTetrimino = (direction: EDirection): void => {
 			break;
 	}
 	Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-	drawAllBlocks();
+	// Blocks moving into other pieces or out of the matrix
 	if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks)) return setTetrimino(original);
 	if (!hasUnderneath(Tetrimino.Blocks)) return;
-	findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
+	// If the tetrimino has something underneath
 	disactivateBlocks();
-	if (hasLost()) {
-		handleLoss();
-	} else {
-		handleFullRows();
-		newTetrimino();
-	}
+	if (hasLost()) return handleLoss();
+	// Checks for full rows
+	handleFullRows();
+	// Creates a new tetrimino
+	newTetrimino();
 }
 
 /**
