@@ -3,3 +3,5 @@ Things that i need to implement:
  - ghost piece
  - score saving
  - customize block patterns
+ - make reactive (larger when on larger screen and smaller when on smaller screen)
+ - touchscreen (buttons)
