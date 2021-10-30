@@ -1,7 +1,5 @@
 Things that i need to implement:
-FIX ISSUE WHERE THERE IS A GAME OVER WHEN SHIFTING THE PIECE AFTER IT HAS LANDED (PART OF SOFT LOCKING)
  - hard drop
  - ghost piece
  - score saving
  - customize block patterns
- - soft drop points

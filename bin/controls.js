@@ -1,4 +1,5 @@
 import { rotateTetrimino, shiftTetrimino } from "./movement.js";
+import { addToScore } from "./score.js";
 import { EDirection } from "./tetrimino.js";
 export const handleKeypress = () => {
     document.addEventListener("keydown", handleMovement);
@@ -9,6 +10,7 @@ export const handleMovement = (e) => {
         case "KeyS":
         case "KeyK":
             shiftTetrimino(EDirection.Down);
+            addToScore(1);
             break;
         case "ArrowLeft":
         case "KeyA":
