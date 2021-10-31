@@ -20,7 +20,6 @@ export const handleMovement = (e: KeyboardEvent): void => {
 		case "KeyS":
 		case "KeyK":
 			shiftTetrimino(EDirection.Down);
-			addToScore(1);
 			break;
 		case "ArrowLeft":
 		case "KeyA":
