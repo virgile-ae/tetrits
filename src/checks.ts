@@ -1,5 +1,5 @@
 // A collection of all the checks
-import { ActiveBlock, inactiveBlocks, InactiveBlock } from "./blocks.js";
+import { ActiveBlock, inactiveBlocks } from "./blocks.js";
 
 /**
  * Checks if any of the active and inactive blocks are located in the same spot 

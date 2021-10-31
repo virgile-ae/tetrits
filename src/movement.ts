@@ -6,7 +6,13 @@ import { handleFullRows } from "./rows.js";
 import { addToScore } from "./score.js";
 import { EDirection } from "./tetrimino.js";
 
+let canMoveDown = true;
+
 const handleLanded = (): void => {
+		if (!hasUnderneath(Tetrimino.Blocks)) {
+			canMoveDown = true;
+			return;
+		}
 		disactivateBlocks();
 		if (hasLost()) return handleLoss();
 		// Checks for full rows
@@ -20,17 +26,17 @@ const handleUnderneath = (): void => {
 	canMoveDown = false;
 	const shiftedLeft = findActiveBlocks(Tetrimino.X-1, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
 	const shiftedRight = findActiveBlocks(Tetrimino.X+1, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-	const blockedByInactiveBlocks = checkSame(shiftedLeft) && checkSame(shiftedRight);
-	const blockedBySide = !(isInMatrix(shiftedLeft) && isInMatrix(shiftedRight));
-	console.log(blockedBySide);
-	if (blockedByInactiveBlocks || blockedBySide) {
+
+	const blockedByAnInactiveBlocks = checkSame(shiftedLeft) || checkSame(shiftedRight);
+	const blockedByBothInactiveBlocks = checkSame(shiftedLeft) && checkSame(shiftedRight);
+	const blockedByASide = !(isInMatrix(shiftedLeft) && isInMatrix(shiftedRight));
+
+	if ((blockedByAnInactiveBlocks && blockedByASide) || blockedByBothInactiveBlocks) {
 		handleLanded();
 	} else {
 		setTimeout(handleLanded, 500);
 	}
 }
-
-let canMoveDown = true;
 
 /**
  * Shifts the piece in a direction and performs necessary checks
