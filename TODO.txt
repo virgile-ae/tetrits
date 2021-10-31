@@ -1,6 +1,5 @@
 Things that i need to implement:
  - hard drop
- - ghost piece
  - score saving
  - customize block patterns
  - make reactive (larger when on larger screen and smaller when on smaller screen)
