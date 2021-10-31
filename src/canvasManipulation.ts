@@ -1,5 +1,5 @@
 // Contains all of the functions that are used to draw to the canvas
-import { inactiveBlocks, Tetrimino, nextTetrimino, findActiveBlocks } from "./blocks.js";
+import { inactiveBlocks, Tetrimino, nextTetrimino, findActiveBlocks, ActiveBlock } from "./blocks.js";
 import { calculateHardDrop } from "./movement.js";
 import { EDirection } from "./tetrimino.js";
 import { virtualToActual, blockLen, virtualHeight, virtualWidth } from "./virtualGrid.js";
@@ -26,6 +26,24 @@ export const drawBlock = (virtualX: number, virtualY: number, color: string, mai
 	canvas.fillStyle = color;
 	canvas.fillRect(actualX, actualY, blockLen, blockLen);
 };
+
+/**
+ * A function that could be used to draw lines on the blocks
+ * @param ctx The canvas on which to draw the line
+ * @param begin The virtual coords from which to start the line
+ * @param end The virtual coords from which to finish the line
+ */
+const drawLine = (ctx: CanvasRenderingContext2D, begin: ActiveBlock , end: ActiveBlock): void => {
+	const beginX = virtualToActual(begin.X);
+	const beginY = virtualToActual(begin.Y);
+	const endX = virtualToActual(end.X);
+	const endY = virtualToActual(end.Y);
+	ctx.strokeStyle = "black";
+	ctx.beginPath();
+    ctx.moveTo(beginX, beginY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
 
 /**
  * Clears the screen to allow for a new frame to be drawn
