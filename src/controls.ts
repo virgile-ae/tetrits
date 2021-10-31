@@ -37,5 +37,8 @@ export const handleMovement = (e: KeyboardEvent): void => {
 		case "KeyW":
 			rotateTetrimino();
 			break;
+		case "Space":
+			// For hard drop
+			break;
 	}
 }

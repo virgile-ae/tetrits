@@ -1,4 +1,5 @@
 import { inactiveBlocks, Tetrimino, nextTetrimino, findActiveBlocks } from "./blocks.js";
+import { calculateHardDrop } from "./movement.js";
 import { EDirection } from "./tetrimino.js";
 import { virtualToActual, blockLen, virtualHeight, virtualWidth } from "./virtualGrid.js";
 export const mainCanvas = document.getElementById("matrix");
@@ -29,6 +30,7 @@ export const drawInactiveBlocks = () => {
 export const drawAllBlocks = () => {
     requestAnimationFrame(() => {
         clearScreen();
+        drawGhostPiece();
         drawTetrimino();
         drawInactiveBlocks();
     });
@@ -45,5 +47,11 @@ export const drawNext = () => {
     nextCtx.fillRect(0, 0, 200, 200);
     for (let i of findActiveBlocks(3, 2, EDirection.Up, nextTetrimino)) {
         drawBlock(i.X, i.Y, nextTetrimino, false);
+    }
+};
+export const drawGhostPiece = () => {
+    const ghostPiece = calculateHardDrop();
+    for (const i of ghostPiece.Blocks) {
+        drawBlock(i.X, i.Y, "grey", true);
     }
 };

@@ -27,5 +27,7 @@ export const handleMovement = (e) => {
         case "KeyW":
             rotateTetrimino();
             break;
+        case "Space":
+            break;
     }
 };

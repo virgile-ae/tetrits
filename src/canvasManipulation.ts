@@ -1,6 +1,7 @@
 // Contains all of the functions that are used to draw to the canvas
-import { inactiveBlocks, InactiveBlock, Tetrimino, nextTetrimino, findActiveBlocks } from "./blocks.js";
-import { EDirection, ETetrimino } from "./tetrimino.js";
+import { inactiveBlocks, Tetrimino, nextTetrimino, findActiveBlocks } from "./blocks.js";
+import { calculateHardDrop } from "./movement.js";
+import { EDirection } from "./tetrimino.js";
 import { virtualToActual, blockLen, virtualHeight, virtualWidth } from "./virtualGrid.js";
 
 // Getting canvas element from DOM
@@ -12,7 +13,7 @@ const nextCtx = nextCanvas.getContext("2d") as CanvasRenderingContext2D;
 
 
 /**
- * Draws a block using coordinates from the virtual canvas
+ * Draws a block using coordinates from the virtual matrix
  * @param virtualX The virtual x coordinate for the block
  * @param virtualY The virtual y coordinate for the block
  * @param color The color of the block
@@ -35,7 +36,7 @@ export const clearScreen = (): void => {
 }
 
 /**
- * Displays the tetrimino on the canvas
+ * Displays the tetrimino on the matrix
  */
 export const drawTetrimino = (): void => {
 	for (let i of Tetrimino.Blocks) {
@@ -44,7 +45,7 @@ export const drawTetrimino = (): void => {
 }
 
 /**
- * Displays inactive blocks on the canvas
+ * Displays inactive blocks on the matrix
  */
 export const drawInactiveBlocks = (): void => {
 	for (let i of inactiveBlocks) {
@@ -54,11 +55,12 @@ export const drawInactiveBlocks = (): void => {
 
 
 /**
- * Draws all blocks on the screen
+ * Draws all blocks on the matrix
  */
 export const drawAllBlocks = (): void => {
 	requestAnimationFrame(() => {
 		clearScreen();
+		drawGhostPiece();
 		drawTetrimino();
 		drawInactiveBlocks();
 	});
@@ -79,12 +81,22 @@ export const write = (x: number, y: number, text: string) => {
 }
 
 /**
- * Draws the next block on screen
+ * Draws the next tetrimino on the matrix
  */
 export const drawNext = (): void => {
 	nextCtx.fillStyle = "black";
 	nextCtx.fillRect(0, 0, 200, 200);
 	for (let i of findActiveBlocks(3, 2, EDirection.Up, nextTetrimino)) {
 		drawBlock(i.X, i.Y, nextTetrimino, false);
+	}
+}
+
+/**
+ * Draws the ghost piece onto the matrix
+ */
+export const drawGhostPiece = (): void => {
+	const ghostPiece = calculateHardDrop();
+	for (const i of ghostPiece.Blocks) {
+		drawBlock(i.X, i.Y, "grey", true);
 	}
 }

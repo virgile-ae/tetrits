@@ -61,3 +61,11 @@ export const rotateTetrimino = () => {
         newTetrimino();
     }
 };
+export const calculateHardDrop = () => {
+    const copy = Object.assign({}, Tetrimino);
+    while (!hasUnderneath(copy.Blocks)) {
+        copy.Y++;
+        copy.Blocks = findActiveBlocks(copy.X, copy.Y, copy.Direction, copy.Type);
+    }
+    return copy;
+};

@@ -1,4 +1,4 @@
-import { Tetrimino, findActiveBlocks, setTetrimino, disactivateBlocks, newTetrimino } from "./blocks.js";
+import { Tetrimino, findActiveBlocks, setTetrimino, disactivateBlocks, newTetrimino, ActiveTetrimino } from "./blocks.js";
 import { drawAllBlocks } from "./canvasManipulation.js";
 import { checkSame, hasLost, hasUnderneath, isInMatrix } from "./checks.js";
 import { handleLoss } from "./game.js";
@@ -74,4 +74,17 @@ export const rotateTetrimino = (): void => {
 		handleFullRows();
 		newTetrimino();
 	}
+}
+
+/**
+ * Calculates the position of a hard dropped tetrimino
+ * @returns The position of the tetrimino if it has been hard dropped
+ */
+export const calculateHardDrop = (): ActiveTetrimino => {
+	const copy = Object.assign({}, Tetrimino);
+	while (!hasUnderneath(copy.Blocks)) {
+		copy.Y++;
+		copy.Blocks = findActiveBlocks(copy.X, copy.Y, copy.Direction, copy.Type);
+	}
+	return copy;
 }
