@@ -61,7 +61,7 @@ export const shiftTetrimino = (direction: EDirection): void => {
 	Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
 	// Blocks moving into other pieces or out of the matrix
 	if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks)) return setTetrimino(original);
-	if (direction == EDirection.Down) addToScore(1);
+	if (direction === EDirection.Down) addToScore(1);
 	// Only needs to check if there is something underneath if it can move down
 	if (canMoveDown && hasUnderneath(Tetrimino.Blocks))	handleUnderneath();
 }
@@ -70,7 +70,7 @@ export const shiftTetrimino = (direction: EDirection): void => {
  * Rotates the active piece clockwise
  */
 export const rotateTetrimino = (): void => {
-	if (!canMoveDown) return;
+	drawAllBlocks();
 	// A copy of the original tetrimino
 	const original = Object.assign({}, Tetrimino);
 	
@@ -83,16 +83,8 @@ export const rotateTetrimino = (): void => {
 	// Calculating the active blocks
 	Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
 	// If at least one of the blocks is outside of or ontop of another block, it resets the tetrimino
-	if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks)) {
-		setTetrimino(original);
-	} else {
-		drawAllBlocks();
-	}
-	if (hasUnderneath(Tetrimino.Blocks)) {
-		disactivateBlocks();
-		handleFullRows();
-		newTetrimino();
-	}
+	if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks)) return setTetrimino(original);
+	if (hasUnderneath(Tetrimino.Blocks)) handleUnderneath();
 }
 
 /**

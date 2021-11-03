@@ -22,7 +22,7 @@ export const checkSame = (blocks: ActiveBlock[]): boolean => {
  */
 export const isInMatrix = (blocks: ActiveBlock[]): boolean => {
 	for (let i of blocks) {
-		if (i.X < 0 || i.X > 9) return false;
+		if (i.X < 0 || i.X > 9 || i.Y > 19) return false;
 	}
 	return true;
 }

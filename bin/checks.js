@@ -10,7 +10,7 @@ export const checkSame = (blocks) => {
 };
 export const isInMatrix = (blocks) => {
     for (let i of blocks) {
-        if (i.X < 0 || i.X > 9)
+        if (i.X < 0 || i.X > 9 || i.Y > 19)
             return false;
     }
     return true;

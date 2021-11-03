@@ -13,6 +13,17 @@ export const drawBlock = (virtualX, virtualY, color, main) => {
     canvas.fillStyle = color;
     canvas.fillRect(actualX, actualY, blockLen, blockLen);
 };
+const drawLine = (ctx, begin, end) => {
+    const beginX = virtualToActual(begin.X);
+    const beginY = virtualToActual(begin.Y);
+    const endX = virtualToActual(end.X);
+    const endY = virtualToActual(end.Y);
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(beginX, beginY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+};
 export const clearScreen = () => {
     mainCtx.fillStyle = "black";
     mainCtx.fillRect(0, 0, virtualWidth * blockLen, virtualHeight * blockLen);

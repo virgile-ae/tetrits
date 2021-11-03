@@ -57,8 +57,7 @@ export const shiftTetrimino = (direction) => {
         handleUnderneath();
 };
 export const rotateTetrimino = () => {
-    if (!canMoveDown)
-        return;
+    drawAllBlocks();
     const original = Object.assign({}, Tetrimino);
     if (Tetrimino.Direction !== 270) {
         Tetrimino.Direction += 90;
@@ -67,17 +66,10 @@ export const rotateTetrimino = () => {
         Tetrimino.Direction = 0;
     }
     Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-    if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks)) {
-        setTetrimino(original);
-    }
-    else {
-        drawAllBlocks();
-    }
-    if (hasUnderneath(Tetrimino.Blocks)) {
-        disactivateBlocks();
-        handleFullRows();
-        newTetrimino();
-    }
+    if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
+        return setTetrimino(original);
+    if (hasUnderneath(Tetrimino.Blocks))
+        handleUnderneath();
 };
 export const calculateHardDrop = () => {
     const copy = Object.assign({}, Tetrimino);
