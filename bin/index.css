@@ -48,6 +48,10 @@ audio {
 	width: 250px;
 }
 
+h1 {
+	font-family: Consolas, monospace;
+}
+
 p {
 	font-size: large;
 	font-family: Consolas, monospace;

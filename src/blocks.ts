@@ -1,121 +1,88 @@
 // Manipulating blocks
-import { drawNext } from "./canvasManipulation.js";
+import { drawNext, findColor } from "./canvasManipulation.js";
 import { randomTetrimino } from "./game.js";
 import { EDirection, ETetrimino, I, J, L, T, S, Z, O } from "./tetrimino.js";
+import { state, updateState } from "./state.js";
 
 /**
  * The type that represents the active tetrimino
  */
 export type ActiveTetrimino = {
-	X: number;
-	Y: number;
-	Direction: EDirection;
-	Type: ETetrimino;
-	Blocks: ActiveBlock[];
-}
+  X: number;
+  Y: number;
+  Direction: EDirection;
+  Type: ETetrimino;
+  Blocks: ActiveBlock[];
+};
 
 /**
  * The type that represents a block of the active tetrimino
  */
-export type ActiveBlock = {
-	X: number;
-	Y: number;
+export class ActiveBlock {
+  X: number;
+  Y: number;
+  constructor(x: number, y: number) {
+    this.X = x;
+    this.Y = y;
+  }
 }
-
-/**
- * A function to facilitate making new ActiveBlock objects
- */
-export const newActiveBlock = (x: number, y: number): ActiveBlock => {
-	return {X: x, Y: y};
-}
-
-/**
- * The piece that the user can currently interact with
- */
-export let Tetrimino: ActiveTetrimino;
-
-/**
- * Allows other modules to set Tetrimino
- */
-export const setTetrimino = (tetrimino: ActiveTetrimino) => {
-	Tetrimino = tetrimino;
-}
-
-/**
- * The next tetrimino to be dropped
- */
-export let nextTetrimino = randomTetrimino();
 
 /**
  * The type that represents the now unactive blocks that have landed
  */
 export type InactiveBlock = {
-	X: number;
-	Y: number;
-	Color: string;
-}
-
-/**
- * It is list of all inactive blocks
- */
-export let inactiveBlocks: InactiveBlock[] = [];
-
-/**
- * Allows other modules to set inactiveBlocks
- */
-export const setInactiveBlocks = (blocks: InactiveBlock[]): void => {
-	inactiveBlocks = blocks;
-}
+  X: number;
+  Y: number;
+  Color: string;
+};
 
 /**
  * Generates a new Tetrimino
  */
 export const newTetrimino = (): void => {
-	const x = 5;
-	const y = -2;
-	const direction = EDirection.Up;
-	Tetrimino = {
-		X: x,
-		Y: y,
-		Direction: direction,
-		Type: nextTetrimino,
-		Blocks: findActiveBlocks(x, y, direction, nextTetrimino)
-	}
-	nextTetrimino = randomTetrimino();
-	drawNext();
-}
+  const x = 5;
+  const y = -2;
+  const direction = EDirection.Up;
+  updateState({
+    Tetrimino: {
+      X: x,
+      Y: y,
+      Direction: direction,
+      Type: state.nextTetrimino,
+      Blocks: findActiveBlocks(x, y, direction, state.nextTetrimino),
+    },
+    nextTetrimino: randomTetrimino(),
+  });
+  drawNext();
+  updateState({
+    hasBeenDropped: false,
+  });
+};
 
 /**
- * Pushes all of the active blocks to the inactive blocks 
+ * Pushes all of the active blocks to the inactive blocks
  */
 export const disactivateBlocks = (): void => {
-	for (let i of Tetrimino.Blocks) {
-		inactiveBlocks.push({
-			X: i.X,
-			Y: i.Y,
-			Color: Tetrimino.Type
-		});
-	}
-}
+  updateState({
+    inactiveBlocks: [
+      ...state.inactiveBlocks,
+      ...state.Tetrimino.Blocks.map((block) => ({
+        X: block.X,
+        Y: block.Y,
+        Color: findColor(state.Tetrimino.Type),
+      })),
+    ],
+  });
+};
 
 /**
  * Calculates where the other blocks are for the active piece
  */
-export const findActiveBlocks = (X: number, Y: number, Direction: EDirection, type: ETetrimino): ActiveBlock[] => {
-	switch (type) {
-		case ETetrimino.I:
-			return I(X, Y, Direction);
-		case ETetrimino.J:
-			return J(X, Y, Direction);
-		case ETetrimino.L:
-			return L(X, Y, Direction);
-		case ETetrimino.T:
-			return T(X, Y, Direction);
-		case ETetrimino.S:
-			return S(X, Y, Direction);
-		case ETetrimino.Z:
-			return Z(X, Y, Direction);
-		default:
-			return O(X, Y, Direction);
-	}
-}
+export const findActiveBlocks = (
+  x: number,
+  y: number,
+  d: EDirection,
+  t: ETetrimino
+): ActiveBlock[] => {
+  return [I, J, L, T, S, Z, O][t](x, y, d);
+};

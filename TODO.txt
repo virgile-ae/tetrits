@@ -1,5 +1,5 @@
 Things that i need to implement:
- - hard drop
+ - fix hard drop so that you can't move sideways
  - score saving
  - customize block patterns
  - make reactive (larger when on larger screen and smaller when on smaller screen)

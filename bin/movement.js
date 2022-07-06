@@ -1,11 +1,13 @@
-import { Tetrimino, findActiveBlocks, setTetrimino, disactivateBlocks, newTetrimino } from "./blocks.js";
-import { drawAllBlocks } from "./canvasManipulation.js";
-import { checkSame, hasLost, hasUnderneath, isInMatrix } from "./checks.js";
-import { handleLoss } from "./game.js";
-import { handleFullRows } from "./rows.js";
-import { addToScore } from "./score.js";
-import { EDirection } from "./tetrimino.js";
+import { Tetrimino, findActiveBlocks, setTetrimino, disactivateBlocks, newTetrimino, } from './blocks.js';
+import { drawAllBlocks } from './canvasManipulation.js';
+import { isOverlapping, hasLost, hasUnderneath, isInMatrix } from './checks.js';
+import { handleLoss } from './game.js';
+import { handleFullRows } from './rows.js';
+import { addToScore } from './score.js';
+import { EDirection } from './tetrimino.js';
 let canMoveDown = true;
+let hasBeenDropped = false;
+export const setHasBeenDropped = (val) => (hasBeenDropped = val);
 const handleLanded = () => {
     if (!hasUnderneath(Tetrimino.Blocks)) {
         canMoveDown = true;
@@ -22,14 +24,17 @@ const handleUnderneath = () => {
     canMoveDown = false;
     const shiftedLeft = findActiveBlocks(Tetrimino.X - 1, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
     const shiftedRight = findActiveBlocks(Tetrimino.X + 1, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-    const blockedByAnInactiveBlocks = checkSame(shiftedLeft) || checkSame(shiftedRight);
-    const blockedByBothInactiveBlocks = checkSame(shiftedLeft) && checkSame(shiftedRight);
+    const blockedByAnInactiveBlocks = isOverlapping(shiftedLeft) || isOverlapping(shiftedRight);
+    const blockedByBothInactiveBlocks = isOverlapping(shiftedLeft) && isOverlapping(shiftedRight);
     const blockedByASide = !(isInMatrix(shiftedLeft) && isInMatrix(shiftedRight));
     if ((blockedByAnInactiveBlocks && blockedByASide) || blockedByBothInactiveBlocks) {
         handleLanded();
     }
-    else {
+    else if (!hasBeenDropped) {
         setTimeout(handleLanded, 500);
+    }
+    else {
+        handleLanded();
     }
 };
 export const shiftTetrimino = (direction) => {
@@ -49,9 +54,9 @@ export const shiftTetrimino = (direction) => {
             break;
     }
     Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-    if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
+    if (isOverlapping(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
         return setTetrimino(original);
-    if (direction == EDirection.Down)
+    if (direction === EDirection.Down)
         addToScore(1);
     if (canMoveDown && hasUnderneath(Tetrimino.Blocks))
         handleUnderneath();
@@ -66,16 +71,24 @@ export const rotateTetrimino = () => {
         Tetrimino.Direction = 0;
     }
     Tetrimino.Blocks = findActiveBlocks(Tetrimino.X, Tetrimino.Y, Tetrimino.Direction, Tetrimino.Type);
-    if (checkSame(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
+    if (isOverlapping(Tetrimino.Blocks) || !isInMatrix(Tetrimino.Blocks))
         return setTetrimino(original);
     if (hasUnderneath(Tetrimino.Blocks))
         handleUnderneath();
 };
-export const calculateHardDrop = () => {
+export const hardDroppedTetrimino = () => {
     const copy = Object.assign({}, Tetrimino);
     while (!hasUnderneath(copy.Blocks)) {
         copy.Y++;
         copy.Blocks = findActiveBlocks(copy.X, copy.Y, copy.Direction, copy.Type);
     }
     return copy;
+};
+export const dropTetrimino = () => {
+    drawAllBlocks();
+    const original = Object.assign({}, Tetrimino);
+    const dropped = hardDroppedTetrimino();
+    setTetrimino(dropped);
+    hasBeenDropped = true;
+    addToScore(dropped.Y - original.Y);
 };

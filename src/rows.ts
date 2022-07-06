@@ -1,72 +1,51 @@
-import { checkLevel, level } from "./score.js";
-import { InactiveBlock, inactiveBlocks, setInactiveBlocks } from "./blocks.js";
+import { checkAndUpdateLevel } from "./score.js";
+import { InactiveBlock } from "./blocks.js";
 import { addToScore } from "./score.js";
 import { virtualHeight } from "./virtualGrid.js";
-
-/**
- * The number of rows that have been completed in the current level
- */
-export let clearedRows = 0;
-
-/**
- * Used to set clearedRows from outside of this module
- * @param num The new value of completedRows
- */
-export const setClearedRows = (num: number): void => {
-	clearedRows = num;
-}
+import { state, updateState } from "./state.js";
 
 /**
  * The total number of rows that have been completed during the entirety of the game
  */
-export let totalClearedRows = 0;
 
-const displayedClearedRows = document.getElementById("clearedRows") as HTMLParagraphElement;
+const displayedClearedRows = document.getElementById(
+  "clearedRows"
+) as HTMLParagraphElement;
 
 /**
  * Checks every row in grid to see if has been cleared and awards the necessary points according to the original nintendo scoring system: https://tetris.fandom.com/wiki/Scoring
+ * TODO: refactor this mess
  */
 export const handleFullRows = (): void => {
-	let toBeRemoved: number[] = [];
-	for (let y = 0; y < virtualHeight; y++) {
-		let row: InactiveBlock[] = [];
-		for (let i of inactiveBlocks) {
-			if (i.Y === y) row.push(i);
-		}
-		if (row.length === 10) toBeRemoved.push(y);
-	}
-	if (toBeRemoved.length === 0) return;
+  let toBeRemoved: number[] = [];
+  [...Array(virtualHeight).keys()].forEach((y) => {
+    const row = state.inactiveBlocks.filter((i) => i.Y === y);
+    if (row.length === 10) toBeRemoved.push(y);
+  });
+  if (toBeRemoved.length === 0) return;
 
-	clearedRows += toBeRemoved.length;
-	totalClearedRows += toBeRemoved.length;
+  updateState({
+    clearedRows: state.clearedRows + toBeRemoved.length,
+    totalClearedRows: state.totalClearedRows + toBeRemoved.length,
+  });
 
-	let filtered: InactiveBlock[] = [];
-	outer: for (let i of inactiveBlocks) {
-		for (let j of toBeRemoved) {
-			if (i.Y === j) continue outer;
-			if (i.Y < j) i.Y++;
-		}
-		filtered.push(i);
-	}
-	setInactiveBlocks(filtered);
+  // TODO: change this
+  let filtered: InactiveBlock[] = [];
+  outer: for (const i of state.inactiveBlocks) {
+    for (const j of toBeRemoved) {
+      if (i.Y === j) continue outer;
+      if (i.Y < j) i.Y++;
+    }
+    filtered.push(i);
+  }
+  updateState({
+    inactiveBlocks: filtered,
+  });
 
-	displayedClearedRows.innerHTML = `cleared rows ${totalClearedRows}`;
+  displayedClearedRows.innerHTML = `cleared rows ${state.totalClearedRows}`;
 
-	let multi = level;
-	switch (toBeRemoved.length) {
-		case 1:
-			multi *= 40;
-			break;
-		case 2:
-			multi *= 100;
-			break;
-		case 3:
-			multi *= 300;
-			break;
-		default:
-			multi *= 1200;
-			break;
-	}
-	addToScore(multi);
-	checkLevel();
-}
+  const pointsGained =
+    (state.level + 1) * [40, 100, 300, 1200][toBeRemoved.length - 1];
+  addToScore(pointsGained);
+  checkAndUpdateLevel();
+};

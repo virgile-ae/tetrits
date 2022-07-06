@@ -2,7 +2,7 @@
   "name": "tetrits",
   "version": "1.0.0",
   "description": "tetris made with typescript",
-  "main": "index.js",
+  "main": "./bin/index.js",
   "scripts": {
     "start": "tsc"
   },
